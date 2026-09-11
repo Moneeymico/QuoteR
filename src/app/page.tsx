@@ -59,16 +59,20 @@ export default function Home() {
     setError(null);
   }
 
-  function loadDemo() {
+  function loadDemo(initialTab: Tab = "trades") {
     setError(null);
     setResult(DEMO_RESULT);
-    setTab("trades");
+    setTab(initialTab);
   }
 
   useEffect(() => {
-    if (new URLSearchParams(window.location.search).get("demo") === "1") {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("demo") === "1") {
+      const requestedTab = params.get("tab");
+      const initialTab: Tab =
+        requestedTab === "coordination" || requestedTab === "flags" ? requestedTab : "trades";
       // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time sync from the URL on mount
-      loadDemo();
+      loadDemo(initialTab);
     }
   }, []);
 
@@ -85,7 +89,7 @@ export default function Home() {
           </p>
           <button
             type="button"
-            onClick={loadDemo}
+            onClick={() => loadDemo()}
             disabled={loading}
             className="mt-2 text-sm font-medium text-blue-600 hover:underline disabled:opacity-60"
           >
