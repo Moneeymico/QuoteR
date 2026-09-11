@@ -6,6 +6,7 @@ import { FileList } from "@/components/FileList";
 import { TradeResults } from "@/components/TradeResults";
 import { SubcontractorMap } from "@/components/SubcontractorMap";
 import { FlagsList } from "@/components/FlagsList";
+import { DEMO_RESULT } from "@/lib/demoData";
 import type { AnalysisResult, AnalyzeApiError, AnalyzeApiResponse } from "@/types/analysis";
 
 type Tab = "trades" | "coordination" | "flags";
@@ -58,6 +59,12 @@ export default function Home() {
     setError(null);
   }
 
+  function loadDemo() {
+    setError(null);
+    setResult(DEMO_RESULT);
+    setTab("trades");
+  }
+
   const missingInfoCount = result?.flags.filter((f) => f.severity === "missing_info").length ?? 0;
 
   return (
@@ -69,6 +76,14 @@ export default function Home() {
             Drop in a specification and drawings — get a trade-by-trade scope breakdown and a
             subcontractor coordination plan.
           </p>
+          <button
+            type="button"
+            onClick={loadDemo}
+            disabled={loading}
+            className="mt-2 text-sm font-medium text-blue-600 hover:underline disabled:opacity-60"
+          >
+            View sample results (no API call, no cost)
+          </button>
         </div>
       </header>
 
