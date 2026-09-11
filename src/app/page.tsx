@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dropzone } from "@/components/Dropzone";
 import { FileList } from "@/components/FileList";
 import { TradeResults } from "@/components/TradeResults";
@@ -64,6 +64,13 @@ export default function Home() {
     setResult(DEMO_RESULT);
     setTab("trades");
   }
+
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("demo") === "1") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time sync from the URL on mount
+      loadDemo();
+    }
+  }, []);
 
   const missingInfoCount = result?.flags.filter((f) => f.severity === "missing_info").length ?? 0;
 
